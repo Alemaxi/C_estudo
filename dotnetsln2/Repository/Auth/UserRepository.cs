@@ -14,6 +14,7 @@ namespace dotnetsln2.Repository.Auth
     {
         private readonly ApplicationContext _context;
 
+
         public UserRepository(ApplicationContext context)
         {
             _context = context;
@@ -21,9 +22,9 @@ namespace dotnetsln2.Repository.Auth
 
         public User RefreshUserInfo(User user)
         {
-            if(!_context.Users.Any(u => u.Id.Equals(user.Id))) return null;
+            if(!_context.users.Any(u => u.Id.Equals(user.Id))) return null;
 
-            var result = _context.Users.SingleOrDefault(u => u.Id.Equals(user.Id));
+            var result = _context.users.SingleOrDefault(u => u.Id.Equals(user.Id));
             if (result != null)
             {
                 try
@@ -43,7 +44,7 @@ namespace dotnetsln2.Repository.Auth
 
         public bool RevokeToken(string userName)
         {
-            var user = _context.Users.SingleOrDefault(u => (u.UserName == userName));
+            var user = _context.users.SingleOrDefault(u => (u.UserName == userName));
             if (user == null) return false;
             user.RefreshToken = null;
             _context.SaveChanges();
@@ -53,12 +54,12 @@ namespace dotnetsln2.Repository.Auth
         public User ValidateCredentials(UserVO user)
         {
             var pass = ComputeHash(user.Password, new SHA256CryptoServiceProvider());
-            return _context.Users.FirstOrDefault(u => (u.UserName == user.UserName) && (u.Password == user.Password));
+            return _context.users.FirstOrDefault(u => (u.UserName == user.UserName) && (u.Password == user.Password));
         }
 
         public User ValidateCredentials(string userName)
         {
-            return _context.Users.SingleOrDefault(u => (u.UserName == userName));
+            return _context.users.SingleOrDefault(u => (u.UserName == userName));
         }
 
         private string ComputeHash(string input, SHA256CryptoServiceProvider algorithm)

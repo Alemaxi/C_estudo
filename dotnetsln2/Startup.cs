@@ -2,11 +2,15 @@ using dotnetsln2.Business;
 using dotnetsln2.Business.Implementations;
 using dotnetsln2.Configurations;
 using dotnetsln2.Models.Context;
+using dotnetsln2.Repository.Auth;
 using dotnetsln2.Repository.Generic;
+using dotnetsln2.Services;
+using dotnetsln2.Services.Implementations;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -84,14 +88,19 @@ namespace dotnetsln2
             }
 
             //Context
-            services.AddDbContext<ApplicationContext>();
+            services.AddDbContext<ApplicationContext>(options => options.UseMySql(strconn,ServerVersion.AutoDetect(strconn)));
 
             //Repository
             services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
+            services.AddScoped<IUserRepository, UserRepository>();
 
             //Business
             services.AddScoped<IEnderecoBusiness, EnderecoBusiness>();
             services.AddScoped<IPessoaBusiness, PessoaBusiness>();
+            services.AddScoped<ILoginBusiness, LoginBusiness>();
+
+            //service
+            services.AddTransient<ITokenService, TokenService>();
 
             services.AddSwaggerGen(c =>
             {

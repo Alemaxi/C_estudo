@@ -9,8 +9,8 @@ namespace dotnetsln2.Models.Context
 
         }
 
-        public DbSet<Pessoa> Pessoas { get; set; }
-        public DbSet<Endereco> Enderecos { get; set; }
-        public DbSet<User> Users { get; set; }
+        public DbSet<Pessoa> pessoas { get; set; }
+        public DbSet<Endereco> enderecos { get; set; }
+        public DbSet<User> users { get; set; }
     }
 }

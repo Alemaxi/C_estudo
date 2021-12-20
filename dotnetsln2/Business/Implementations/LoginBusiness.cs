@@ -46,7 +46,7 @@ namespace dotnetsln2.Business.Implementations
             var refreshToken = _service.GenerateRefreshToken();
 
             user.RefreshToken = refreshToken;
-            user.RefreshTokenExipiryTime = DateTime.Now.AddDays(_configuration.DaysToExpiry);
+            user.RefreshTokenExpiryTime = DateTime.Now.AddDays(_configuration.DaysToExpiry);
 
             _repository.RefreshUserInfo(user);
 
@@ -70,7 +70,7 @@ namespace dotnetsln2.Business.Implementations
             if (
                 user == null || 
                 user.RefreshToken != token.RefreshToken || 
-                user.RefreshTokenExipiryTime <= DateTime.Now
+                user.RefreshTokenExpiryTime <= DateTime.Now
                 ) 
                 return null;
 
